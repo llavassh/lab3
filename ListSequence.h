@@ -68,9 +68,9 @@ public:
     }
     
     ListSequence<T>* InsertAt(int index, const T& item) const override {
+        if (index < 0 || index > GetLength()) 
+            throw IndexOutOfRange(index, GetLength());
         ListSequence<T>* result = Instance();
-        if (index < 0 || index > result->GetLength()) 
-            throw IndexOutOfRange(index, result->GetLength());
         result->list->InsertAt(index, item);
         return result;
     }
@@ -81,14 +81,18 @@ public:
             throw EmptyContainer("Sequence");
         if (index < 0 || index >= GetLength())
             throw IndexOutOfRange(index, GetLength());
+        LinkedList<T>* temp = new LinkedList<T>();
         for (int i = 0; i < index; i++) {
-            result->Append(Get(i));
+            temp->Append(Get(i));
         }
         for (int i = index + 1; i < GetLength(); i++) {
-            result->Append(Get(i));
+            temp->Append(Get(i));
         }
+        delete result->list;
+        result->list = temp;
         return result;
     }
+
 
     //возвращает подстроку
     ListSequence<T>* GetSubSequence(int start, int end) const override {

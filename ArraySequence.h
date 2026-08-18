@@ -82,10 +82,9 @@ public:
     }
     
     ArraySequence<T>* InsertAt(int index, const T& item) const override {
+        if (index < 0 || index > GetLength()) 
+            throw IndexOutOfRange(index, GetLength());
         ArraySequence<T>* result = Instance();
-        if (index < 0 || index > result->GetLength()) 
-            throw IndexOutOfRange(index, result->GetLength());
-        
         DynamicArray<T>* temp = new DynamicArray<T>(result->GetLength() + 1);
         for (int i = 0; i < index; i++) {
             temp->Set(i, result->items->Get(i));
