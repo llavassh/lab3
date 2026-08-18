@@ -29,6 +29,11 @@ public:
     explicit ArraySequence(int size): items(new DynamicArray<T>(size)) {}
     ArraySequence(T* arr, int count): items(new DynamicArray<T>(arr, count)) {}
     ArraySequence(const ArraySequence<T> &other): items(new DynamicArray<T>(*other.items)) {}
+    ArraySequence(const Sequence<T>* other) : items(new DynamicArray<T>()){
+        for (int i = 0; i < other->GetLength(); i++) {
+            items->Add(other->Get(i));
+        }
+    }
 
     //удаление
     virtual ~ArraySequence() {
@@ -88,6 +93,24 @@ public:
         temp->Set(index, item);
         for (int i = index; i < result->GetLength(); i++) {
             temp->Set(i + 1, result->items->Get(i));
+        }
+        delete result->items;
+        result->items = temp;
+        return result;
+    }
+
+    ArraySequence<T>* RemoveAt(int index) const override {
+        ArraySequence<T>* result = Instance();
+        if (result->GetLength() == 0)
+            throw EmptyContainer("Sequence");
+        if (index < 0 || index >= GetLength())
+            throw IndexOutOfRange(index, GetLength());
+        DynamicArray<T>* temp = new DynamicArray<T>();
+        for (int i = 0; i < index; i++) {
+            temp->Add(Get(i));
+        }
+        for (int i = index + 1; i < GetLength(); i++) {
+            temp->Add(Get(i));
         }
         delete result->items;
         result->items = temp;

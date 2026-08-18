@@ -8,20 +8,21 @@ class DynamicArray {
 private:
     T* data;
     int size;
+    int capacity;
 
 public:
     //создает пустой динамический массив
-    DynamicArray(): data(nullptr), size(0) {}
+    DynamicArray(): data(nullptr), size(0), capacity(0) {}
 
     //создает динамический массив заданного размера
-    explicit DynamicArray(int size): size(size) {
+    explicit DynamicArray(int size): size(size), capacity(size) {
         if (size < 0) 
             throw std::invalid_argument("Negative size");
         data = (size > 0) ? new T[size] : nullptr; 
     }
 
     //создает динамический массив и копирует в него элементы из исходного обычного массива
-    DynamicArray(T* items, int count): size(count) {
+    DynamicArray(T* items, int count): size(count), capacity(count) {
         if (count < 0) 
             throw std::invalid_argument("Negative count");
         if (count > 0) {
@@ -36,9 +37,9 @@ public:
     }
 
     //создает  массив и копирует в него элементы из другого динамического массива
-    DynamicArray(const DynamicArray<T> &other): size(other.size) {
-        if (size > 0) {
-            data = new T[size];
+    DynamicArray(const DynamicArray<T> &other): size(other.size), capacity(other.capacity) {
+        if (capacity > 0) {
+            data = new T[capacity];
             for (int i = 0; i < size; i++) {
                 data[i] = other.data[i];
             }
@@ -58,8 +59,9 @@ public:
         if (this != &other) {
             delete[] data;
             size = other.size;
-            if (size > 0) {
-                data = new T[size];
+            capacity = other.capacity;
+            if (capacity > 0) {
+                data = new T[capacity];
                 for (int i = 0; i < size; i++) {
                     data[i] = other.data[i];
                 }
@@ -91,19 +93,26 @@ public:
         return size;
     }
 
+    int GetCapacity() const {
+        return capacity;
+    }
     //изменяет размер массива
     void Resize(int newSize) {
-        if (newSize < 0) throw std::invalid_argument("Negative size");
-
-        T* newData = (newSize > 0) ? new T[newSize] : nullptr;
-        int minSize = (newSize < size) ? newSize : size;
-
-        for (int i = 0; i < minSize; i++) {
-            newData[i] = data[i];
+        if (newSize < 0)
+            throw std::invalid_argument("Negative size");
+        if (newSize > capacity) {
+            int newCapacity = (capacity == 0) ? 1 : capacity;
+            while (newSize > newCapacity) {
+                newCapacity *= 2;
+            }
+            T *newData = new T[newCapacity];
+            for (int i = 0; i < size; i++) {
+                newData[i] = data[i];
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
         }
-
-        delete[] data;
-        data = newData;
         size = newSize;
     }
 

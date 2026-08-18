@@ -75,6 +75,21 @@ public:
         return result;
     }
 
+    ListSequence<T>* RemoveAt(int index) const override {
+        ListSequence<T>* result = Instance();
+        if (result->GetLength() == 0)
+            throw EmptyContainer("Sequence");
+        if (index < 0 || index >= GetLength())
+            throw IndexOutOfRange(index, GetLength());
+        for (int i = 0; i < index; i++) {
+            result->Append(Get(i));
+        }
+        for (int i = index + 1; i < GetLength(); i++) {
+            result->Append(Get(i));
+        }
+        return result;
+    }
+
     //возвращает подстроку
     ListSequence<T>* GetSubSequence(int start, int end) const override {
         if (start < 0 || end >= GetLength() || end < start) throw IndexOutOfRange(start, GetLength());

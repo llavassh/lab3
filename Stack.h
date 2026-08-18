@@ -48,7 +48,7 @@ public:
     T Pop() {
         if (IsEmpty()) throw EmptyContainer("Stack");
         T item = seq->GetLast();
-        seq->Slice(GetSize() - 1, 1, nullptr);
+        seq->RemoveAt(seq->GetLength() - 1);
         return item;
     }
 

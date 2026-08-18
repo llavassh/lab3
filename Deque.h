@@ -52,14 +52,14 @@ public:
     T PopFront() {
         if (IsEmpty()) throw EmptyContainer("Deque");
         T item = seq->GetFirst();
-        seq->Slice(0, 1, nullptr);
+        seq->RemoveAt(0);
         return item;
     }
 
     T PopBack() {
         if (IsEmpty()) throw EmptyContainer("Deque");
         T item = seq->GetLast();
-        seq->Slice(GetSize() - 1, 1, nullptr);
+        seq->RemoveAt(seq->GetLength() - 1);
         return item;
     }
 

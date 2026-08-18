@@ -10,6 +10,7 @@ public:
     explicit MutableArraySequence(int size) : ArraySequence<T>(size) {}
     MutableArraySequence(T* arr, int count) : ArraySequence<T>(arr, count) {}
     MutableArraySequence(const MutableArraySequence<T>& other) : ArraySequence<T>(other) {}
+    MutableArraySequence(const Sequence<T>* other) : ArraySequence<T>(other) {}
 
     MutableArraySequence<T>* CreateEmptySequence() const override {
         return new MutableArraySequence<T>;

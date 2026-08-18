@@ -44,6 +44,7 @@ public:
     virtual Sequence<T>* Append(const T &item) const = 0;
     virtual Sequence<T>* Prepend(const T &item) const = 0;
     virtual Sequence<T>* InsertAt(int index, const T &item) const = 0;
+    virtual Sequence<T>* RemoveAt(int index) const = 0;
     virtual Sequence<T>* GetSubSequence(int start, int end) const = 0;
     virtual Sequence<T>* Concat(const Sequence<T>* other) const = 0;
     virtual Sequence<T>* Slice(int start, int count, const Sequence<T>* insertSeq = nullptr) const = 0;

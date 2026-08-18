@@ -49,7 +49,7 @@ public:
     T Dequeue() {
         if (IsEmpty()) throw EmptyContainer("Queue");
         T item = seq->GetFirst();
-        seq->Slice(0, 1, nullptr);
+        seq->RemoveAt(0);
         return item;
     }
 
